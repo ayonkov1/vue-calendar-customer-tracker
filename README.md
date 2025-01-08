@@ -1,5 +1,7 @@
 # Custom Calendar with Item Tracking
 
+<img src="./assets/images/cover-image.png" width="1000"/>
+
 Application I created for my better half to allow her to track any number of custom items per day.
 
 The goal of the app is to manage items (such as tasks, activities, glasses of water, apples eaten) on a daily basis, making it easy to track and modify the count of items over time.
