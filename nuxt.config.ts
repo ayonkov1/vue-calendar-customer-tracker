@@ -5,7 +5,14 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
     compatibilityDate: '2024-11-01',
     devtools: { enabled: true },
+    postcss: {
+        plugins: {
+            tailwindcss: {},
+            autoprefixer: {},
+        },
+    },
     css: [
+        '~/assets/css/main.css',
         'vuetify/lib/styles/main.sass',
         '@mdi/font/css/materialdesignicons.css',
     ],
