@@ -1,75 +1,23 @@
-# Nuxt Minimal Starter
+# Custom Calendar with Item Tracking
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This application allows users to track any number of custom items per day.
 
-## Setup
+The goal of the app is to manage items (such as tasks, categories, or activities) on a daily basis, making it easy to track and modify the count of items over time.
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## Quickstart
 
 ```bash
-# npm
-npm run dev
+# Step 1: Install
+npm (pnpm, yarn, bun) install
 
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+# Step 2: Run the app
+npm (pnpm, yarn, bun) install
 ```
 
-## Production
+## Techstack
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Created with:
+[Vue.js](https://vuejs.org/),
+[Vuetify.js](https://vuetifyjs.com/en/getting-started/installation/),
+[Nuxt.js](https://nuxt.com/docs/getting-started/introduction),
+[TypeScript](https://www.typescriptlang.org/).
