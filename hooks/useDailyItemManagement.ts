@@ -10,13 +10,12 @@ interface ItemsPerDay {
 }
 
 export function useItemManagement() {
-    const items: ItemsPerDay = {}
+    const itemsPerDay: ItemsPerDay = {}
 
+    const items = ref<Item[]>([])
     const item = ref<string>('')
 
-    const addItem = (date: Date) => {
-        const selectedDate = formatDate(date)
-
+    const addItem = () => {
         const trimmedItem = item.value.trim()
 
         if (
@@ -28,11 +27,9 @@ export function useItemManagement() {
             return
         }
 
-        if (trimmedItem && selectedDate) {
+        if (trimmedItem) {
             items.value.push({ title: trimmedItem, count: 0 })
             item.value = ''
-
-            console.log(items)
         }
     }
 
@@ -49,6 +46,7 @@ export function useItemManagement() {
     return {
         item,
         items,
+        itemsPerDay,
         addItem,
         handleDecrement,
         handleIncrement,

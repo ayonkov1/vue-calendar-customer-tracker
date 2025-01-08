@@ -24,13 +24,13 @@ const { item, items, addItem, handleDecrement, handleIncrement } =
         variant="outlined"
         class="px-10 mt-10"
         v-model="item"
-        @keyup.enter="addItem(date)">
+        @keyup.enter="addItem">
         <template #append>
             <VBtn
                 :disabled="!item"
                 variant="elevated"
                 color="primary"
-                @click="addItem(date)">
+                @click="addItem">
                 Add
             </VBtn>
         </template>

@@ -2,7 +2,7 @@
 import { defineEmits, defineProps } from 'vue'
 
 const props = defineProps({
-    typeLabel: {
+    label: {
         type: String,
         required: true,
     },
@@ -25,7 +25,7 @@ const onIncrement = () => {
 
 <template>
     <div class="flex justify-left items-center gap-5 px-10 mb-5">
-        <p class="capitalize">{{ typeLabel }}: {{ count }}</p>
+        <p class="capitalize">{{ label }}: {{ count }}</p>
         <v-btn
             :disabled="count === 0"
             class="ml-auto"
