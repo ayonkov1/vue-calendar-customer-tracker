@@ -29,19 +29,20 @@ const onDelete = () => {
 
 <template>
     <div class="flex justify-left items-center gap-5 px-10 mb-5">
-        <v-btn @click="onDelete"> del </v-btn>
+        <VBtn
+            @click="onDelete"
+            icon="mdi-delete"
+            color="error"></VBtn>
         <p class="capitalize">{{ label }}: {{ count }}</p>
-        <v-btn
+        <VBtn
             :disabled="count === 0"
             class="ml-auto"
             @click="onDecrement"
-            icon>
-            -
-        </v-btn>
-        <v-btn
+            icon="mdi-minus">
+        </VBtn>
+        <VBtn
             @click="onIncrement"
-            icon>
-            +
-        </v-btn>
+            icon="mdi-plus">
+        </VBtn>
     </div>
 </template>

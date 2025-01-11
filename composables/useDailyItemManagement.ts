@@ -43,6 +43,7 @@ export function useItemManagement(date: Ref<Date>) {
         itemsData[formattedDate.value] = itemsData[formattedDate.value].filter(
             (item, idx: number) => idx !== index,
         )
+        toast.success(`Delete successful.`, toasterOptions)
     }
 
     const addItem = (newItem: string) => {
@@ -60,8 +61,6 @@ export function useItemManagement(date: Ref<Date>) {
         }
 
         itemsData[formattedDate.value].push({ title: newItem, count: 1 })
-
-        toast.success(`"${newItem}" added successfully!`, toasterOptions)
     }
 
     return {

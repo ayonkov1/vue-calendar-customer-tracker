@@ -1,11 +1,12 @@
 <!-- app.vue -->
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { VBtn, VDatePicker, VCombobox } from 'vuetify/components'
+
 import CustomItemField from '~/components/CustomItemField.vue'
 import { useItemManagement } from '~/composables/useDailyItemManagement'
 
 const date = ref<Date>(new Date())
+const dialog = ref<bool>(false)
 const formattedDate = computed(() => formatDate(date.value))
 
 const pickableItems = ref<[string]>(['Възрастни', 'Деца', 'Частни'])
@@ -21,6 +22,31 @@ const {
 </script>
 
 <template>
+    <div class="p-5 flex justify-between">
+        <VBtn
+            variant="outlined"
+            @click="dialog = true">
+            Edit
+        </VBtn>
+        <VBtn variant="outlined"> Logout </VBtn>
+    </div>
+
+    <VDialog
+        v-model="dialog"
+        width="auto">
+        <VCard
+            max-width="400"
+            prepend-icon="mdi-update"
+            text="Your application will relaunch automatically after the update is complete."
+            title="Update in progress">
+            <template v-slot:actions>
+                <VBtn
+                    class="ms-auto"
+                    text="Ok"
+                    @click="dialog = false"></VBtn>
+            </template>
+        </VCard>
+    </VDialog>
     <div class="sticky">
         <VDatePicker
             class="sticky"
@@ -42,6 +68,7 @@ const {
             v-model="pickableItem">
             <template #append>
                 <VBtn
+                    prepend-icon="mdi-plus-thick"
                     :disabled="!pickableItem"
                     variant="elevated"
                     color="primary"
