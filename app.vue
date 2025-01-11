@@ -1,12 +1,23 @@
+<!-- app.vue -->
 <script setup lang="ts">
-import { ref } from 'vue'
-import { VAutocomplete, VBtn, VDatePicker } from 'vuetify/components'
+import { ref, reactive } from 'vue'
+import {
+    VAutocomplete,
+    VBtn,
+    VDatePicker,
+    VTextField,
+} from 'vuetify/components'
 import CustomItemField from '~/components/CustomItemField.vue'
-import { useItemManagement } from '~/hooks/useDailyItemManagement'
+import { useItemManagement } from '~/composables/useDailyItemManagement'
 
 const date = ref<Date>(new Date())
-const { item, items, addItem, handleDecrement, handleIncrement } =
-    useItemManagement()
+const formattedDate = computed(() => formatDate(date.value))
+
+const pickableItems = ref<[string]>(['Възрастни', 'Деца', 'Частни'])
+const pickableItem = ref<string>('')
+
+const { itemsForDate, handleIncrement, handleDecrement, addItem } =
+    useItemManagement(date)
 </script>
 
 <template>
@@ -17,28 +28,28 @@ const { item, items, addItem, handleDecrement, handleIncrement } =
         first-day-of-week="1"
         rounded="0"
         width="100vw" />
-    <VAutocomplete
-        density="compact"
-        label="Trackable"
-        :items="['Възрастни', 'Деца', 'Частни']"
-        variant="outlined"
-        class="px-10 mt-10"
-        v-model="item"
-        @keyup.enter="addItem">
-        <template #append>
-            <VBtn
-                :disabled="!item"
-                variant="elevated"
-                color="primary"
-                @click="addItem">
-                Add
-            </VBtn>
-        </template>
-    </VAutocomplete>
 
-    <div class="mt-5">
+    <div class="px-10 mt-10">
+        <VAutocomplete
+            density="compact"
+            label="Trackable"
+            :items="pickableItems"
+            variant="outlined"
+            v-model="pickableItem">
+            <template #append>
+                <VBtn
+                    :disabled="!pickableItem"
+                    variant="elevated"
+                    color="primary"
+                    @click="addItem(pickableItem)">
+                    Add
+                </VBtn>
+            </template>
+        </VAutocomplete>
+    </div>
+    <div class="mt-10">
         <CustomItemField
-            v-for="(field, index) in items"
+            v-for="(field, index) in itemsForDate"
             :key="index"
             :label="field.title"
             :count="field.count"
