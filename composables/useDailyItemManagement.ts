@@ -39,6 +39,12 @@ export function useItemManagement(date: Ref<Date>) {
         }
     }
 
+    const handleDelete = (index: number) => {
+        itemsData[formattedDate.value] = itemsData[formattedDate.value].filter(
+            (item, idx: number) => idx !== index,
+        )
+    }
+
     const addItem = (newItem: string) => {
         if (!itemsData[formattedDate.value]) {
             itemsData[formattedDate.value] = []
@@ -62,6 +68,7 @@ export function useItemManagement(date: Ref<Date>) {
         itemsForDate,
         handleIncrement,
         handleDecrement,
+        handleDelete,
         addItem,
     }
 }

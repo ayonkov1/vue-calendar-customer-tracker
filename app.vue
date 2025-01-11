@@ -9,22 +9,31 @@ const date = ref<Date>(new Date())
 const formattedDate = computed(() => formatDate(date.value))
 
 const pickableItems = ref<[string]>(['Възрастни', 'Деца', 'Частни'])
-const pickableItem = ref<string>('')
+const pickableItem = ref<string>(null)
 
-const { itemsForDate, handleIncrement, handleDecrement, addItem } =
-    useItemManagement(date)
+const {
+    itemsForDate,
+    handleIncrement,
+    handleDecrement,
+    handleDelete,
+    addItem,
+} = useItemManagement(date)
 </script>
 
 <template>
-    <VDatePicker
-        v-model="date"
-        color="#e2a0e5"
-        elevation="18"
-        first-day-of-week="1"
-        rounded="0"
-        width="100vw" />
+    <div class="sticky">
+        <VDatePicker
+            class="sticky"
+            v-model="date"
+            color="#e2a0e5"
+            elevation="18"
+            first-day-of-week="1"
+            rounded="0"
+            position="sticky"
+            width="100vw" />
+    </div>
 
-    <div class="px-10 mt-10">
+    <div class="top-40 px-10 mt-10">
         <VCombobox
             density="compact"
             :items="pickableItems"
@@ -48,6 +57,7 @@ const { itemsForDate, handleIncrement, handleDecrement, addItem } =
             :key="index"
             :label="field.title"
             :count="field.count"
+            @delete="handleDelete(index)"
             @decrement="handleDecrement(index)"
             @increment="handleIncrement(index)" />
     </div>
