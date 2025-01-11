@@ -1,5 +1,6 @@
 // useDailyItemManagement.ts
 import { reactive } from 'vue'
+import { toast, type Options } from 'vue3-toastify'
 
 interface Item {
     title: string
@@ -11,6 +12,13 @@ interface ItemsByDate {
 }
 
 export function useItemManagement(date: Ref<Date>) {
+    const toasterOptions: Options = {
+        position: 'top-center',
+        closeOnClick: false,
+        pauseOnFocusLoss: false,
+        hideProgressBar: true,
+    }
+
     const itemsData = reactive<ItemsByDate>({})
 
     const formattedDate = computed(() => {
@@ -36,8 +44,18 @@ export function useItemManagement(date: Ref<Date>) {
             itemsData[formattedDate.value] = []
         }
 
-        // Add the new item to the specific date's array
+        const itemExists = itemsData[formattedDate.value].find(
+            (item) => item.title === newItem,
+        )
+
+        if (itemExists) {
+            toast.error(`"${newItem}" already in trackables!`, toasterOptions)
+            return
+        }
+
         itemsData[formattedDate.value].push({ title: newItem, count: 1 })
+
+        toast.success(`"${newItem}" added successfully!`, toasterOptions)
     }
 
     return {

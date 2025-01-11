@@ -14,7 +14,8 @@
         "@popperjs/core": "^2.11.8",
         "nuxt": "^3.14.1592",
         "vue": "latest",
-        "vue-router": "latest"
+        "vue-router": "latest",
+        "vue3-toastify": "^0.2.8"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",

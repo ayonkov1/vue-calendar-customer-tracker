@@ -1,12 +1,7 @@
 <!-- app.vue -->
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import {
-    VAutocomplete,
-    VBtn,
-    VDatePicker,
-    VTextField,
-} from 'vuetify/components'
+import { VBtn, VDatePicker, VCombobox } from 'vuetify/components'
 import CustomItemField from '~/components/CustomItemField.vue'
 import { useItemManagement } from '~/composables/useDailyItemManagement'
 
@@ -30,11 +25,11 @@ const { itemsForDate, handleIncrement, handleDecrement, addItem } =
         width="100vw" />
 
     <div class="px-10 mt-10">
-        <VAutocomplete
+        <VCombobox
             density="compact"
-            label="Trackable"
             :items="pickableItems"
-            variant="outlined"
+            variant="underlined"
+            clearable
             v-model="pickableItem">
             <template #append>
                 <VBtn
@@ -45,7 +40,7 @@ const { itemsForDate, handleIncrement, handleDecrement, addItem } =
                     Add
                 </VBtn>
             </template>
-        </VAutocomplete>
+        </VCombobox>
     </div>
     <div class="mt-10">
         <CustomItemField
