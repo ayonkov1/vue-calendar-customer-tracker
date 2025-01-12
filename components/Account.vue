@@ -37,7 +37,7 @@ async function updateProfile() {
         }
 
         const { error } = await supabase.from('profiles').upsert(updates, {
-            returning: 'minimal', // Don't return the value after inserting
+            returning: 'minimal',
         })
         if (error) throw error
     } catch (error) {
@@ -62,47 +62,59 @@ async function signOut() {
 </script>
 
 <template>
-    <form
-        class="form-widget"
-        @submit.prevent="updateProfile">
-        <div>
-            <label for="email">Email</label>
-            <input
-                id="email"
-                type="text"
-                :value="user.email"
-                disabled />
-        </div>
-        <div>
-            <label for="username">Username</label>
-            <input
-                id="username"
-                type="text"
-                v-model="username" />
-        </div>
-        <div>
-            <label for="website">Website</label>
-            <input
-                id="website"
-                type="url"
-                v-model="website" />
-        </div>
+    <div class="flex h-screen items-center justify-center">
+        <v-card
+            class="mx-auto pa-12 pb-8 w-full"
+            elevation="10"
+            max-width="448"
+            rounded="lg">
+            <div class="text-subtitle-1 text-medium-emphasis">Email</div>
 
-        <div>
-            <input
-                type="submit"
-                class="button primary block"
-                :value="loading ? 'Loading ...' : 'Update'"
-                :disabled="loading" />
-        </div>
+            <v-text-field
+                class="mb-5"
+                density="compact"
+                v-model="user.email"
+                placeholder="Email address"
+                prepend-inner-icon="mdi-email-outline"
+                variant="outlined"></v-text-field>
 
-        <div>
-            <button
-                class="button block"
-                @click="signOut"
-                :disabled="loading">
-                Sign Out
-            </button>
-        </div>
-    </form>
+            <div class="text-subtitle-1 text-medium-emphasis">Username</div>
+
+            <v-text-field
+                class="mb-5"
+                density="compact"
+                v-model="username"
+                placeholder="john.doe"
+                prepend-inner-icon="mdi-account"
+                variant="outlined"></v-text-field>
+
+            <div class="text-subtitle-1 text-medium-emphasis">Website</div>
+
+            <v-text-field
+                class="mb-5"
+                density="compact"
+                v-model="website"
+                placeholder="www.website.com"
+                prepend-inner-icon="mdi-web"
+                variant="outlined"></v-text-field>
+
+            <div class="flex gap-10 justify-between mt-10">
+                <v-btn
+                    class="flex-grow"
+                    color="blue"
+                    variant="flat"
+                    @click="updateProfile">
+                    {{ loading ? 'Loading ...' : 'Update' }}
+                </v-btn>
+
+                <v-btn
+                    color="red"
+                    variant="tonal"
+                    @click="signOut"
+                    append-icon="mdi-logout">
+                    Logout
+                </v-btn>
+            </div>
+        </v-card>
+    </div>
 </template>
