@@ -28,6 +28,7 @@ export default defineNuxtConfig({
             noExternal: ['vuetify'],
         },
     },
+    supabase: { redirect: false },
     modules: [
         '@nuxtjs/supabase',
         (options, nuxt) => {
