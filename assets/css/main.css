@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.v-text-field .v-input__details {
+    display: contents;
+}
+
+.v-btn__content {
+    font-size: 18px;
+}
+
+.v-btn--icon {
+    border-radius: 40% !important;
+}
+
+div.v-picker__header,
+div.v-picker-title {
+    display: none;
+}
+
+.customOutlinedEvent {
+    border: thin dashed green;
+    border-radius: 40% !important;
+    width: calc(var(--v-btn-height) + 12px);
+    height: calc(var(--v-btn-height) + 12px);
+}

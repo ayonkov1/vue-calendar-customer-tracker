@@ -1,4 +1,3 @@
-<!-- app.vue -->
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 
@@ -12,6 +11,21 @@ const formattedDate = computed(() => formatDate(date.value))
 const pickableItems = ref<[string]>(['Възрастни', 'Деца', 'Частни'])
 const pickableItem = ref<string>(null)
 
+const trackables = ref([
+    {
+        type: 'Възрастни',
+        price: 4.4,
+    },
+    {
+        type: 'Деца',
+        price: 4.0,
+    },
+    {
+        type: 'Частни',
+        price: 28,
+    },
+])
+
 const {
     itemsForDate,
     handleIncrement,
@@ -23,28 +37,60 @@ const {
 
 <template>
     <div class="p-5 flex justify-between">
-        <VBtn
+        <v-btn
+            variant="outlined"
+            @click="dialog = true">
+            Summary
+        </v-btn>
+        <v-btn
             variant="outlined"
             @click="dialog = true">
             Edit
-        </VBtn>
-        <VBtn variant="outlined"> Logout </VBtn>
+        </v-btn>
+        <v-btn variant="outlined"> Logout </v-btn>
     </div>
 
     <VDialog
         v-model="dialog"
-        width="auto">
+        width="100vw">
         <VCard
-            max-width="400"
-            prepend-icon="mdi-update"
-            text="Your application will relaunch automatically after the update is complete."
-            title="Update in progress">
-            <template v-slot:actions>
-                <VBtn
-                    class="ms-auto"
-                    text="Ok"
-                    @click="dialog = false"></VBtn>
-            </template>
+            prepend-icon="mdi-playlist-edit"
+            title="Editing items">
+            <v-table class="mx-2">
+                <thead>
+                    <tr>
+                        <th class="text-xl !font-black">Item</th>
+                        <th class="text-xl !font-black">Price (лв.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="item in trackables"
+                        :key="item.type">
+                        <td class="text-lg italic">
+                            {{ item.type }}
+                        </td>
+                        <td>
+                            <v-text-field
+                                v-model="item.price"
+                                density="compact"
+                                variant="solo"
+                                :value="item.price.toFixed(2)"
+                                @input="
+                                    (value) => (item.price = parseFloat(value))
+                                "></v-text-field>
+                        </td>
+                    </tr>
+                </tbody>
+            </v-table>
+
+            <v-btn
+                class="m-6 mt-8"
+                text="Save"
+                size="large"
+                variant="tonal"
+                color="primary"
+                @click="dialog = false"></v-btn>
         </VCard>
     </VDialog>
     <div class="sticky">
@@ -67,14 +113,14 @@ const {
             clearable
             v-model="pickableItem">
             <template #append>
-                <VBtn
+                <v-btn
                     prepend-icon="mdi-plus-thick"
                     :disabled="!pickableItem"
                     variant="elevated"
                     color="primary"
                     @click="addItem(pickableItem)">
                     Add
-                </VBtn>
+                </v-btn>
             </template>
         </VCombobox>
     </div>

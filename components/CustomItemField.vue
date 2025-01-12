@@ -31,18 +31,26 @@ const onDelete = () => {
     <div class="flex justify-left items-center gap-5 px-10 mb-5">
         <VBtn
             @click="onDelete"
-            icon="mdi-delete"
+            icon="mdi-delete-outline"
+            size="x-small"
+            rounded="lg"
             color="error"></VBtn>
         <p class="capitalize">{{ label }}: {{ count }}</p>
         <VBtn
             :disabled="count === 0"
             class="ml-auto"
+            size="small"
+            color="#c43427"
+            rounded="lg"
             @click="onDecrement"
             icon="mdi-minus">
         </VBtn>
         <VBtn
-            @click="onIncrement"
-            icon="mdi-plus">
+            icon="mdi-plus"
+            size="small"
+            color="#63b25b"
+            rounded="lg"
+            @click="onIncrement">
         </VBtn>
     </div>
 </template>
