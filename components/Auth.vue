@@ -18,7 +18,7 @@ const handleRegister = async () => {
         if (error) throw error
         toast.info('Check your email for confirmation.', ToasterOptions)
     } catch (error) {
-        alert(error.error_description || error.message)
+        toast.error(error.error_description || error.message, ToasterOptions)
     } finally {
         loading.value = false
     }
@@ -34,48 +34,72 @@ const handleLogin = async () => {
         if (error) throw error
         toast.success('Logged in successfully.', ToasterOptions)
     } catch (error) {
-        alert(error.error_description || error.message)
+        toast.error(error.error_description || error.message, ToasterOptions)
     } finally {
         loading.value = false
     }
 }
+
+const visible = ref(false)
 </script>
 
 <template>
-    <div class="form-widget">
-        <h1 class="header">Supabase + Nuxt 3</h1>
+    <div class="flex h-screen items-center justify-center">
+        <v-card
+            class="mx-auto pa-12 pb-8 w-full"
+            elevation="10"
+            max-width="448"
+            rounded="lg">
+            <div class="text-subtitle-1 text-medium-emphasis">Account</div>
 
-        <div>
-            <VTextField
-                class="inputField"
-                type="email"
-                placeholder="Your email"
-                v-model="email" />
-        </div>
-        <div>
-            <VTextField
-                class="inputField"
-                type="text"
-                placeholder="Your password"
-                v-model="password" />
-        </div>
-        <div>
-            <v-btn
-                type="submit"
-                class="button block"
-                :disabled="loading"
-                @click="handleLogin">
-                Login
-            </v-btn>
-        </div>
-        <div>
-            <v-btn
-                type="submit"
-                class="button block"
-                :disabled="loading"
-                @click="handleRegister">
-                Register
-            </v-btn>
-        </div>
+            <v-text-field
+                class="mb-5"
+                density="compact"
+                v-model="email"
+                placeholder="Email address"
+                prepend-inner-icon="mdi-email-outline"
+                variant="outlined"></v-text-field>
+
+            <div
+                class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+                Password
+
+                <a
+                    class="text-caption text-decoration-none text-blue"
+                    href="#"
+                    rel="noopener noreferrer"
+                    target="_blank">
+                    Forgot login password?</a
+                >
+            </div>
+
+            <v-text-field
+                :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                :type="visible ? 'text' : 'password'"
+                density="compact"
+                v-model="password"
+                placeholder="Enter your password"
+                prepend-inner-icon="mdi-lock-outline"
+                variant="outlined"
+                @click:append-inner="visible = !visible"></v-text-field>
+
+            <div class="flex gap-10 justify-between my-8">
+                <v-btn
+                    class="flex-grow"
+                    color="blue"
+                    variant="tonal"
+                    @click="handleLogin">
+                    Log In
+                </v-btn>
+
+                <v-btn
+                    class="flex-grow"
+                    color="red"
+                    variant="tonal"
+                    @click="handleRegister">
+                    Sign Up
+                </v-btn>
+            </div>
+        </v-card>
     </div>
 </template>

@@ -4,7 +4,7 @@ const user = useSupabaseUser()
 
 <template>
     <div>
-        <Calendar v-if="user" />
+        <Account v-if="user" />
         <Auth v-else />
     </div>
 </template>
