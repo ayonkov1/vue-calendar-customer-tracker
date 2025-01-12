@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import { toast } from 'vue3-toastify'
 
 import CustomItemField from '~/components/CustomItemField.vue'
 import { useItemManagement } from '~/composables/useDailyItemManagement'
@@ -38,6 +39,23 @@ const {
     handleDelete,
     addItem,
 } = useItemManagement(date)
+
+const supabase = useSupabaseClient()
+
+const loading = ref(false)
+
+const handleLogout = async () => {
+    try {
+        loading.value = true
+        const { error } = await supabase.auth.signOut()
+        if (error) throw error
+        toast.success('Logout successful.')
+    } catch (error: any) {
+        toast.error(error.error_description || error.message)
+    } finally {
+        loading.value = false
+    }
+}
 </script>
 
 <template>
@@ -52,7 +70,11 @@ const {
             @click="dialog = true">
             Edit
         </v-btn>
-        <v-btn variant="outlined"> Logout </v-btn>
+        <v-btn
+            variant="outlined"
+            @click="handleLogout">
+            Logout
+        </v-btn>
     </div>
 
     <VDialog

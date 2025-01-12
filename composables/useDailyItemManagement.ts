@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
-import { toast, type Options } from 'vue3-toastify'
+import { toast } from 'vue3-toastify'
+import { ToasterOptions } from '~/misc/ToasterOptions'
 
 interface Item {
     title: string
@@ -11,13 +12,6 @@ interface ItemsByDate {
 }
 
 export function useItemManagement(date: Ref<Date>) {
-    const toasterOptions: Options = {
-        position: 'top-center',
-        closeOnClick: false,
-        pauseOnFocusLoss: false,
-        hideProgressBar: true,
-    }
-
     const itemsData = reactive<ItemsByDate>({})
 
     const formattedDate = computed(() => {
@@ -42,7 +36,7 @@ export function useItemManagement(date: Ref<Date>) {
         itemsData[formattedDate.value] = itemsData[formattedDate.value].filter(
             (item, idx: number) => idx !== index,
         )
-        toast.success(`Delete successful.`, toasterOptions)
+        toast.success(`Delete successful.`, ToasterOptions)
     }
 
     const addItem = (newItem: string) => {
@@ -55,7 +49,7 @@ export function useItemManagement(date: Ref<Date>) {
         )
 
         if (itemExists) {
-            toast.error(`"${newItem}" already in trackables!`, toasterOptions)
+            toast.error(`"${newItem}" already in trackables!`, ToasterOptions)
             return
         }
 
