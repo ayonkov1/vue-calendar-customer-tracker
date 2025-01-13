@@ -3,6 +3,7 @@ import { toast } from 'vue3-toastify'
 import { ToasterOptions } from '~/misc/ToasterOptions'
 
 const supabase = useSupabaseClient()
+const router = useRouter()
 
 const loading = ref(false)
 const email = ref('')
@@ -33,6 +34,7 @@ const handleLogin = async () => {
         })
         if (error) throw error
         toast.success('Logged in successfully.', ToasterOptions)
+        router.push('/')
     } catch (error) {
         toast.error(error.error_description || error.message, ToasterOptions)
     } finally {

@@ -59,24 +59,6 @@ const handleLogout = async () => {
 </script>
 
 <template>
-    <div class="p-5 flex justify-between">
-        <v-btn
-            variant="outlined"
-            @click="dialog = true">
-            Summary
-        </v-btn>
-        <v-btn
-            variant="outlined"
-            @click="dialog = true">
-            Edit
-        </v-btn>
-        <v-btn
-            variant="outlined"
-            @click="handleLogout">
-            Logout
-        </v-btn>
-    </div>
-
     <VDialog
         v-model="dialog"
         width="100vw">
