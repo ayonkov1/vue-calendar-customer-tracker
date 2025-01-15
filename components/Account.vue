@@ -1,5 +1,6 @@
 <script setup>
 const supabase = useSupabaseClient()
+const user = useSupabaseUser()
 
 const loading = ref(true)
 const username = ref('')
@@ -7,8 +8,6 @@ const website = ref('')
 const avatar_path = ref('')
 
 loading.value = true
-const user = useSupabaseUser()
-
 const { data } = await supabase
     .from('profiles')
     .select(`username, website, avatar_url`)
@@ -20,10 +19,7 @@ if (data) {
     website.value = data.website
     avatar_path.value = data.avatar_url
 }
-
 loading.value = false
-
-const router = useRouter()
 
 async function updateProfile() {
     try {
@@ -48,21 +44,6 @@ async function updateProfile() {
         loading.value = false
     }
 }
-
-async function signOut() {
-    try {
-        loading.value = true
-        const { error } = await supabase.auth.signOut()
-        if (error) throw error
-        user.value = null
-        router.push('/login')
-    } catch (error) {
-        alert(error.message)
-    } finally {
-        loading.value = false
-        router.push('/login')
-    }
-}
 </script>
 
 <template>
@@ -72,6 +53,16 @@ async function signOut() {
             elevation="0"
             max-width="448"
             rounded="lg">
+            <div class="text-subtitle-1 text-medium-emphasis">Name</div>
+
+            <v-text-field
+                class="mb-5"
+                density="compact"
+                v-model="username"
+                placeholder="john.doe"
+                prepend-inner-icon="mdi-account"
+                variant="outlined"></v-text-field>
+
             <div class="text-subtitle-1 text-medium-emphasis">Email</div>
 
             <v-text-field
@@ -80,16 +71,6 @@ async function signOut() {
                 v-model="user.email"
                 placeholder="Email address"
                 prepend-inner-icon="mdi-email-outline"
-                variant="outlined"></v-text-field>
-
-            <div class="text-subtitle-1 text-medium-emphasis">Username</div>
-
-            <v-text-field
-                class="mb-5"
-                density="compact"
-                v-model="username"
-                placeholder="john.doe"
-                prepend-inner-icon="mdi-account"
                 variant="outlined"></v-text-field>
 
             <div class="text-subtitle-1 text-medium-emphasis">Website</div>
@@ -109,14 +90,6 @@ async function signOut() {
                     variant="flat"
                     @click="updateProfile">
                     {{ loading ? 'Loading ...' : 'Update' }}
-                </v-btn>
-
-                <v-btn
-                    color="red"
-                    variant="tonal"
-                    @click="signOut"
-                    append-icon="mdi-logout">
-                    Logout
                 </v-btn>
             </div>
         </v-card>

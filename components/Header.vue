@@ -13,6 +13,27 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 const navigation = [{ name: 'Calendar', href: '/', current: true }]
 
 const user = useSupabaseUser()
+const supabase = useSupabaseClient()
+const router = useRouter()
+
+const loading = ref(true)
+
+loading.value
+
+async function signOut() {
+    try {
+        loading.value = true
+        const { error } = await supabase.auth.signOut()
+        if (error) throw error
+        user.value = null
+        router.push('/login')
+    } catch (error) {
+        alert(error.message)
+    } finally {
+        loading.value = false
+        router.push('/login')
+    }
+}
 </script>
 
 <template>
@@ -101,16 +122,17 @@ const user = useSupabaseUser()
                                     >
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
-                                    <NuxtLink
-                                        to="#"
+                                    <button
+                                        class="w-full text-left"
+                                        @click="signOut"
                                         :class="[
                                             active
                                                 ? 'bg-gray-100 outline-none'
                                                 : '',
                                             'block px-4 py-2 text-sm text-gray-700',
-                                        ]"
-                                        >Sign out</NuxtLink
-                                    >
+                                        ]">
+                                        Sign out
+                                    </button>
                                 </MenuItem>
                             </MenuItems>
                         </transition>
