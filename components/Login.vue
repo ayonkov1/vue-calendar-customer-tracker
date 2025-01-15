@@ -49,7 +49,7 @@ const visible = ref(false)
     <div class="flex h-screen items-center justify-center">
         <v-card
             class="mx-auto pa-12 pb-8 w-full"
-            elevation="10"
+            elevation="0"
             max-width="448"
             rounded="lg">
             <div class="text-subtitle-1 text-medium-emphasis">Account</div>

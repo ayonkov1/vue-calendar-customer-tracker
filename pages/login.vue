@@ -1,3 +1,5 @@
 <template>
-    <Auth />
+    <div>
+        <Login />
+    </div>
 </template>

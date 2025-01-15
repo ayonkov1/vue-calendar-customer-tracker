@@ -23,6 +23,8 @@ if (data) {
 
 loading.value = false
 
+const router = useRouter()
+
 async function updateProfile() {
     try {
         loading.value = true
@@ -53,19 +55,21 @@ async function signOut() {
         const { error } = await supabase.auth.signOut()
         if (error) throw error
         user.value = null
+        router.push('/login')
     } catch (error) {
         alert(error.message)
     } finally {
         loading.value = false
+        router.push('/login')
     }
 }
 </script>
 
 <template>
-    <div class="flex h-screen items-center justify-center">
+    <div class="flex items-start justify-center mt-10">
         <v-card
-            class="mx-auto pa-12 pb-8 w-full"
-            elevation="10"
+            class="mx-auto pa-10 pb-8 w-full"
+            elevation="0"
             max-width="448"
             rounded="lg">
             <div class="text-subtitle-1 text-medium-emphasis">Email</div>

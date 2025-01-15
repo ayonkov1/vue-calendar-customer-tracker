@@ -1,5 +1,23 @@
+<script setup>
+import {
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuItems,
+} from '@headlessui/vue'
+import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
+
+const navigation = [{ name: 'Calendar', href: '/', current: true }]
+
+const user = useSupabaseUser()
+</script>
+
 <template>
     <Disclosure
+        v-if="user"
         as="nav"
         class="bg-gray-800"
         v-slot="{ open }">
@@ -9,7 +27,7 @@
                     class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                     <!-- Mobile menu button-->
                     <DisclosureButton
-                        class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        class="relative inline-flex items-center justify-center rounded-md p-2 text-white">
                         <span class="absolute -inset-0.5" />
                         <span class="sr-only">Open main menu</span>
                         <Bars3Icon
@@ -24,15 +42,9 @@
                 </div>
                 <div
                     class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                    <div class="flex shrink-0 items-center">
-                        <img
-                            class="h-8 w-auto"
-                            src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                            alt="Your Company" />
-                    </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
-                            <a
+                            <NuxtLink
                                 v-for="item in navigation"
                                 :key="item.name"
                                 :href="item.href"
@@ -45,23 +57,13 @@
                                 :aria-current="
                                     item.current ? 'page' : undefined
                                 "
-                                >{{ item.name }}</a
+                                >{{ item.name }}</NuxtLink
                             >
                         </div>
                     </div>
                 </div>
                 <div
                     class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                    <button
-                        type="button"
-                        class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                        <span class="absolute -inset-1.5" />
-                        <span class="sr-only">View notifications</span>
-                        <BellIcon
-                            class="size-6"
-                            aria-hidden="true" />
-                    </button>
-
                     <!-- Profile dropdown -->
                     <Menu
                         as="div"
@@ -87,39 +89,27 @@
                             <MenuItems
                                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
                                 <MenuItem v-slot="{ active }">
-                                    <a
-                                        href="#"
+                                    <NuxtLink
+                                        to="/profile"
                                         :class="[
                                             active
                                                 ? 'bg-gray-100 outline-none'
                                                 : '',
                                             'block px-4 py-2 text-sm text-gray-700',
                                         ]"
-                                        >Your Profile</a
+                                        >Your Profile</NuxtLink
                                     >
                                 </MenuItem>
                                 <MenuItem v-slot="{ active }">
-                                    <a
-                                        href="#"
+                                    <NuxtLink
+                                        to="#"
                                         :class="[
                                             active
                                                 ? 'bg-gray-100 outline-none'
                                                 : '',
                                             'block px-4 py-2 text-sm text-gray-700',
                                         ]"
-                                        >Settings</a
-                                    >
-                                </MenuItem>
-                                <MenuItem v-slot="{ active }">
-                                    <a
-                                        href="#"
-                                        :class="[
-                                            active
-                                                ? 'bg-gray-100 outline-none'
-                                                : '',
-                                            'block px-4 py-2 text-sm text-gray-700',
-                                        ]"
-                                        >Sign out</a
+                                        >Sign out</NuxtLink
                                     >
                                 </MenuItem>
                             </MenuItems>
@@ -149,23 +139,3 @@
         </DisclosurePanel>
     </Disclosure>
 </template>
-
-<script setup>
-import {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-} from '@headlessui/vue'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-
-const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'Team', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
-]
-</script>
