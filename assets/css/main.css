@@ -6,12 +6,12 @@
     display: contents;
 }
 
-.v-btn__content {
+/* .v-btn__content {
     font-size: 18px;
-}
+} */
 
 .v-btn--icon {
-    border-radius: 40% !important;
+    border-radius: 25% !important;
 }
 
 div.v-picker__header,

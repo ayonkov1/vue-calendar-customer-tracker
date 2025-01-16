@@ -2,13 +2,13 @@ import { reactive } from 'vue'
 import { toast } from 'vue3-toastify'
 import { ToasterOptions } from '~/misc/ToasterOptions'
 
-interface Item {
+export interface CountItem {
     title: string
     count: number
 }
 
 interface ItemsByDate {
-    [date: string]: Item[]
+    [date: string]: CountItem[]
 }
 
 export function useItemManagement(date: Ref<Date>) {
@@ -19,6 +19,8 @@ export function useItemManagement(date: Ref<Date>) {
     })
 
     const itemsForDate = computed(() => {
+        console.log(itemsData[formattedDate.value])
+
         return itemsData[formattedDate.value] || []
     })
 
@@ -33,9 +35,7 @@ export function useItemManagement(date: Ref<Date>) {
     }
 
     const handleDelete = (index: number) => {
-        itemsData[formattedDate.value] = itemsData[formattedDate.value].filter(
-            (item, idx: number) => idx !== index,
-        )
+        itemsData[formattedDate.value] = itemsData[formattedDate.value].filter((item, idx: number) => idx !== index)
         toast.success(`Delete successful.`, ToasterOptions)
     }
 
@@ -44,9 +44,7 @@ export function useItemManagement(date: Ref<Date>) {
             itemsData[formattedDate.value] = []
         }
 
-        const itemExists = itemsData[formattedDate.value].find(
-            (item) => item.title === newItem,
-        )
+        const itemExists = itemsData[formattedDate.value].find((item) => item.title === newItem)
 
         if (itemExists) {
             toast.error(`"${newItem}" already in trackables!`, ToasterOptions)

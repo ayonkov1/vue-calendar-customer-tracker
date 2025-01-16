@@ -14,11 +14,7 @@ export default defineNuxtConfig({
             autoprefixer: {},
         },
     },
-    css: [
-        '~/assets/css/main.css',
-        'vuetify/lib/styles/main.sass',
-        '@mdi/font/css/materialdesignicons.css',
-    ],
+    css: ['~/assets/css/main.css', 'vuetify/lib/styles/main.sass', '@mdi/font/css/materialdesignicons.css'],
     build: {
         transpile: ['vuetify'],
     },

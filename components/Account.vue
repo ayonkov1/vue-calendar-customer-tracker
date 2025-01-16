@@ -4,16 +4,11 @@ const user = useSupabaseUser()
 
 const loading = ref(true)
 const username = ref('')
-const website = ref('')
 const fullname = ref('')
 const avatar_path = ref('')
 
 loading.value = true
-const { data } = await supabase
-    .from('profiles')
-    .select(`username, full_name, avatar_url`)
-    .eq('id', user.value.id)
-    .single()
+const { data } = await supabase.from('profiles').select(`username, full_name, avatar_url`).eq('id', user.value.id).single()
 
 if (data) {
     username.value = data.username
@@ -45,16 +40,19 @@ async function updateProfile() {
         loading.value = false
     }
 }
+
+const fullnameFromResponse = fullname
 </script>
 
 <template>
     <div class="mt-10 px-10 pb-8">
-        <p class="font-black text-5xl mb-6">Hi, {{ fullname.split(' ')[0] }}</p>
+        <p class="font-black text-5xl mb-6">Hi, {{ fullnameFromResponse.split(' ')[0] }}</p>
         <v-card
             class="mx-auto w-full"
             elevation="0"
             max-width="448"
-            rounded="lg">
+            rounded="lg"
+        >
             <div class="text-subtitle-1 text-medium-emphasis">Username</div>
 
             <v-text-field
@@ -63,7 +61,8 @@ async function updateProfile() {
                 v-model="username"
                 placeholder="john.doe"
                 prepend-inner-icon="mdi-account"
-                variant="outlined"></v-text-field>
+                variant="outlined"
+            ></v-text-field>
 
             <div class="text-subtitle-1 text-medium-emphasis">Full Name</div>
 
@@ -72,15 +71,16 @@ async function updateProfile() {
                 density="compact"
                 v-model="fullname"
                 placeholder="John Doe"
-                prepend-inner-icon="mdi-email-outline"
-                variant="outlined"></v-text-field>
+                variant="outlined"
+            ></v-text-field>
 
             <div class="flex">
                 <v-btn
                     class="flex-grow"
                     color="blue"
                     variant="flat"
-                    @click="updateProfile">
+                    @click="updateProfile"
+                >
                     {{ loading ? 'Loading ...' : 'Update' }}
                 </v-btn>
             </div>

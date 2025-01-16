@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { toast } from 'vue3-toastify'
 
 import CustomItemField from '~/components/CustomItemField.vue'
 import { useItemManagement } from '~/composables/useDailyItemManagement'
 
 const date = ref<Date>(new Date())
-const dialog = ref<Boolean>(false)
+const dialog = ref(false)
 const formattedDate = computed(() => formatDate(date.value))
 
 const pickableItems = ref<string[]>(['Възрастни', 'Деца', 'Частни'])
-const pickableItem = ref<string | null>(null)
+const pickableItem = ref<string>('')
 
-interface Trackables {
+interface PriceItem {
     type: string
     price: number
 }
 
-const trackables = ref<Trackables[]>([
+const trackables = reactive<PriceItem[]>([
     {
         type: 'Възрастни',
         price: 4.4,
@@ -32,40 +31,31 @@ const trackables = ref<Trackables[]>([
     },
 ])
 
-const {
-    itemsForDate,
-    handleIncrement,
-    handleDecrement,
-    handleDelete,
-    addItem,
-} = useItemManagement(date)
+const { itemsForDate, handleIncrement, handleDecrement, handleDelete, addItem } = useItemManagement(date)
 
-const supabase = useSupabaseClient()
+function calculateTotal(prices: PriceItem[], counts: CountItem[]): number {
+    return counts.reduce((total, countItem) => {
+        const priceItem = prices.find((price) => price.type === countItem.title)
 
-const loading = ref(false)
-
-const handleLogout = async () => {
-    try {
-        loading.value = true
-        const { error } = await supabase.auth.signOut()
-        if (error) throw error
-        toast.success('Logout successful.')
-    } catch (error: any) {
-        toast.error(error.error_description || error.message)
-    } finally {
-        loading.value = false
-    }
+        if (priceItem) {
+            return total + priceItem.price * countItem.count
+        }
+        return total
+    }, 0)
 }
+
+const sum = computed(() => {
+    return calculateTotal(trackables, itemsForDate.value)
+})
 </script>
 
 <template>
     <div>
-        <VDialog
-            v-model="dialog"
-            width="100vw">
+        <VDialog v-model="dialog">
             <VCard
                 prepend-icon="mdi-playlist-edit"
-                title="Editing items">
+                title="Editing items"
+            >
                 <v-table class="mx-2">
                     <thead>
                         <tr>
@@ -76,19 +66,21 @@ const handleLogout = async () => {
                     <tbody>
                         <tr
                             v-for="item in trackables"
-                            :key="item.type">
-                            <td class="text-lg italic">
+                            :key="item.type"
+                        >
+                            <td class="font-mono">
                                 {{ item.type }}
                             </td>
                             <td>
                                 <v-text-field
+                                    max-width="100px"
                                     v-model="item.price"
+                                    type="number"
+                                    step="0.1"
                                     density="compact"
-                                    variant="solo"
-                                    :value="item.price.toFixed(2)"
-                                    @input="
-                                    (value: any) => (item.price = parseFloat(value))
-                                "></v-text-field>
+                                    variant="outlined"
+                                    min="0"
+                                />
                             </td>
                         </tr>
                     </tbody>
@@ -100,7 +92,8 @@ const handleLogout = async () => {
                     size="large"
                     variant="tonal"
                     color="primary"
-                    @click="dialog = false"></v-btn>
+                    @click="dialog = false"
+                ></v-btn>
             </VCard>
         </VDialog>
         <div>
@@ -111,37 +104,57 @@ const handleLogout = async () => {
                 first-day-of-week="1"
                 rounded="0"
                 position="sticky"
-                width="100vw" />
+                width="100vw"
+            />
         </div>
 
-        <div class="top-40 px-10 mt-10">
+        <div class="top-40 m-5 mt-10">
             <VCombobox
                 density="compact"
                 :items="pickableItems"
                 variant="underlined"
                 clearable
-                v-model="pickableItem">
+                v-model="pickableItem"
+                @keydown.enter="addItem(pickableItem)"
+            >
                 <template #append>
                     <v-btn
-                        prepend-icon="mdi-plus-thick"
+                        class="mr-3"
+                        icon="mdi-arrow-right-circle"
                         :disabled="!pickableItem"
-                        variant="elevated"
                         color="primary"
-                        @click="addItem(pickableItem)">
-                        Add
+                        size="small"
+                        variant="flat"
+                        rounded="lg"
+                        @click="addItem(pickableItem)"
+                    >
+                    </v-btn>
+                    <v-btn
+                        icon="mdi-pencil"
+                        size="small"
+                        variant="tonal"
+                        rounded="lg"
+                        @click="dialog = true"
+                    >
                     </v-btn>
                 </template>
             </VCombobox>
         </div>
-        <div class="mt-10">
+        <div class="mx-5">
             <CustomItemField
                 v-for="(field, index) in itemsForDate"
                 :key="index"
                 :label="field.title"
                 :count="field.count"
+                :trackables="trackables"
                 @delete="handleDelete(index)"
                 @decrement="handleDecrement(index)"
-                @increment="handleIncrement(index)" />
+                @increment="handleIncrement(index)"
+            />
+            <div class="flex justify-between">
+                <div class="font-bold">За деня:</div>
+                <div class="font-bold">{{ sum.toFixed(2) }} лв.</div>
+            </div>
         </div>
     </div>
 </template>
