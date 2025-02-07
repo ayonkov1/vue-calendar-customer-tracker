@@ -21,7 +21,7 @@ export function useItemManagement(date: Ref<Date>) {
     const itemsForDate = computed(() => {
         console.log(itemsData[formattedDate.value])
 
-        return itemsData[formattedDate.value] || []
+        return itemsData[formattedDate.value]?.sort((a, b) => a.title.localeCompare(b.title)) || []
     })
 
     const handleIncrement = (index: number) => {
@@ -39,14 +39,14 @@ export function useItemManagement(date: Ref<Date>) {
         toast.success(`Delete successful.`, ToasterOptions)
     }
 
+    const itemExists = (newItem: string) => itemsData[formattedDate.value].find((item) => item.title === newItem)
+
     const addItem = (newItem: string) => {
         if (!itemsData[formattedDate.value]) {
             itemsData[formattedDate.value] = []
         }
 
-        const itemExists = itemsData[formattedDate.value].find((item) => item.title === newItem)
-
-        if (itemExists) {
+        if (itemExists(newItem)) {
             toast.error(`"${newItem}" already in trackables!`, ToasterOptions)
             return
         }
@@ -60,5 +60,6 @@ export function useItemManagement(date: Ref<Date>) {
         handleDecrement,
         handleDelete,
         addItem,
+        itemExists,
     }
 }

@@ -31,7 +31,7 @@ const trackables = reactive<PriceItem[]>([
     },
 ])
 
-const { itemsForDate, handleIncrement, handleDecrement, handleDelete, addItem } = useItemManagement(date)
+const { itemsForDate, handleIncrement, handleDecrement, handleDelete, addItem, itemExists } = useItemManagement(date)
 
 function calculateTotal(prices: PriceItem[], counts: CountItem[]): number {
     return counts.reduce((total, countItem) => {
