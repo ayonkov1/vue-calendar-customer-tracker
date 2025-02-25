@@ -28,7 +28,6 @@ export default defineNuxtConfig({
         },
     },
     modules: [
-        '@nuxtjs/supabase',
         (options, nuxt) => {
             nuxt.hooks.hook('vite:extendConfig', (config) =>
                 // @ts-ignore

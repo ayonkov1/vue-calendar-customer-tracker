@@ -14,6 +14,8 @@ interface ItemsByDate {
 export function useItemManagement(date: Ref<Date>) {
     const itemsData = reactive<ItemsByDate>({})
 
+    console.log(itemsData)
+
     const formattedDate = computed(() => {
         return formatDate(date.value)
     })
